@@ -6,7 +6,7 @@
 /* Unicode Characters */
 #define BAR             "\u2588\u2588\u2588"
 #define ARROW           "\033[95m\u2794\033[0m"
-#define CHECK           "\033[92m\u2714\033[0m"
+#define CHECK           "[\033[92m\u2714\033[0m]"
 
 /* BAR Colour definitions */
 #define LGHT_BAR        "\033[90;100m"
