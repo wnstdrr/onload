@@ -1,8 +1,8 @@
-# onload
+<h3 align="center"><img src=https://user-images.githubusercontent.com/12807776/171079551-ebbb3380-ecda-4d14-91f8-bb0ced48f578.png alt="onload" height="125px"></h3>
 
-Command line system information tool written in C.
+<p align="center">Command line system information tool written in C.<p>
 
-# Requirments
+ # Requirements
 
   * - libcpuid (>= 0.4.1-1.1) > Not yet required...
   * - gcc
