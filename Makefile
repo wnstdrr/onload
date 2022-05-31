@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-O3 -Werror=format-security -Werror=implicit-function-declaration -flto -Wall -Wextra
+CFLAGS=-O3 -Werror=format-security -Werror=implicit-function-declaration -Wall -Wextra
 
 onload:
 	$(CC) -o onload main.c include/colourbar/colourbar.c include/onload/onload.c $(CFLAGS)
