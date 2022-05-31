@@ -4,7 +4,7 @@
 
  # Requirements
 
-  * - libcpuid (>= 0.4.1-1.1) > Not yet required...
+  * - libcpuid-dev (>= 0.4.1-1.1) > Not yet required...
   * - gcc
   * - make
 
@@ -17,6 +17,46 @@ To install run
 ```console
 make
 sudo make install
+```
+
+# Configuring
+
+To configure onload you can customize the headers located in
+include/colourbar, include/onload. This allows for you to control output given in results,
+configure the colour bar settings (if you dont like the current look), and set custom time string. 
+
+The example colourbar BAR_ARRAY defined in colourbar.h
+
+```c
+const char *BAR_ARRAY[MAX_COLOUR_SIZE] {
+    DRK_BAR,           BAR, RESET,
+    RED_LGHT_BAR,      BAR, RESET,
+    GREEN_DRK_BAR,     BAR, RESET,
+    YELLOW_DRK_BAR,    BAR, RESET,
+    BLUE_DRK_BAR,      BAR, RESET,
+    MAG_DRK_BAR,       BAR, RESET,
+    CYAN_DRK_BAR,      BAR, RESET,
+    WHITE_LGHT_BAR,    BAR, RESET,
+    LGHT_BAR,          BAR, RESET,
+    RED_DRK_BAR,       BAR, RESET,
+    GREEN_LGHT_BAR,    BAR, RESET,
+    YELLOW_LGHT_BAR,   BAR, RESET,
+    BLUE_LGHT_BAR,     BAR, RESET,
+    MAG_LGHT_BAR,      BAR, RESET,
+    CYAN_LGHT_BAR,     BAR, RESET,
+    WHITE_DRK_BAR,     BAR, RESET
+};
+```
+
+The example output RESULT defined in onload.h
+
+```c
+char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW] = {
+    {CHECK, " Terminal ", ARROW, " ",  info -> Terminal},
+    {CHECK, " Kernel   ", ARROW, " ",  info -> Kernel},
+    {CHECK, " Desktop  ", ARROW, " ",  info -> Desktop},
+    {CHECK, " Time     ", ARROW, " ",  info -> Time}
+};
 ```
 
 # Note
