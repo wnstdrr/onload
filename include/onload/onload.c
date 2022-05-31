@@ -14,6 +14,10 @@ void OnloadSYS(_SYS_INFO *info) {
    time(&now);
    timeinfo = localtime(&now);
 
+   char buffer[0x50];
+   strftime(buffer, 0x50, TIME_FMT, timeinfo);
+   int TimeBufferSize = strlen(buffer)+1;
+
    struct utsname uname_info; 
    uname(&uname_info);
 
@@ -26,7 +30,8 @@ void OnloadSYS(_SYS_INFO *info) {
    info -> Terminal = TERM     != NULL ? TERM              : "n/a";
    info -> Desktop  = DESKTOP  != NULL ? DESKTOP           : "n/a";
    info -> Time     = timeinfo != NULL ? asctime(timeinfo) : "n/a";
-
+   
+   memcpy(info -> Time,   buffer,  TimeBufferSize);
    memcpy(info -> Kernel, Release, ReleaseSize);
 }
 
@@ -40,9 +45,7 @@ void OnloadResult(_SYS_INFO *info) {
 
     size_t i, j;
     for (j = 0; j < 4; j++) {
-        // Column
         for (i = 0; i < 5; i++) {
-            // Row
             fprintf(stdout, "%s", RESULT[j][i]);
         }
         fprintf(stdout, "%c", '\n');
