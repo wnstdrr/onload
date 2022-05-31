@@ -1,7 +1,11 @@
 #ifndef _ONLOAD_H
 #define _ONLOAD_H
 
+#include "../colourbar/colourbar.h"
+
 #define TIME_FMT "%I:%M:%S"
+#define MAX_RESULT_COL 15 
+#define MAX_RESULT_ROW 5
 
 typedef struct _SYS_INFO {
     char *Terminal;
@@ -11,5 +15,8 @@ typedef struct _SYS_INFO {
     char *Kernel;
 } _SYS_INFO;
 
+char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW];
+
 extern void OnloadSYS(_SYS_INFO *info);
+extern void OnloadResult(_SYS_INFO *info);
 #endif /* _ONLOAD_H */
