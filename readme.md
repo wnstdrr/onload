@@ -2,16 +2,16 @@
 
 <p align="center">Command line system information tool written in C.<p>
 
- # Requirements
+<h2 align="left">Requirements</h2>
 
-  * - libcpuid-dev (>= 0.4.1-1.1) > Not yet required...
-  * - gcc
-  * - make
+  * libcpuid-dev (>= 0.4.1-1.1) > Not yet required...
+  * gcc
+  * make
 
-# Installing 
+<h2 align="left">Installing</h2> 
 
-onload requires to be built from source. This makes it highly customiziable
-and portable since you can configure settings through the headers.
+<p>onload requires to be built from source. This makes it highly customiziable
+and portable since you can configure settings through the headers.<p>
 
 To install run
 ```console
@@ -19,13 +19,14 @@ make
 sudo make install
 ```
 
-# Configuring
+<h2>Configuring</h2>
 
 To configure onload you can customize the headers located in
-include/colourbar, include/onload. This allows for you to control output given in results,
-configure the colour bar settings (if you dont like the current look), and set custom time string. 
+include/colourbar and include/onload. This allows for you to control output given in results,
+configure the colour bar settings (if you dont like the current look), and set custom time string
+along with being able to write your own methods if you so like.
 
-The example colourbar BAR_ARRAY defined in colourbar.h
+The example colourbar `BAR_ARRAY` defined in colourbar.h
 
 ```c
 const char *BAR_ARRAY[MAX_COLOUR_SIZE] {
@@ -48,7 +49,7 @@ const char *BAR_ARRAY[MAX_COLOUR_SIZE] {
 };
 ```
 
-The example output RESULT defined in onload.h
+The example output `RESULT` defined in onload.h
 
 ```c
 char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW] = {
@@ -59,7 +60,7 @@ char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW] = {
 };
 ```
 
-# Note
+<h2>Note</h2>
 
 This project is far from complete and needs a lot of work to be a complete
 command line system information tool.
