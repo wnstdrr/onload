@@ -16,6 +16,7 @@ typedef struct _SYS_INFO {
 } _SYS_INFO;
 
 extern char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW];
+extern char *OnloadENV(const char *env);
 extern void OnloadSYS(_SYS_INFO *info);
 extern void OnloadResult(_SYS_INFO *info);
 #endif /* _ONLOAD_H */

@@ -35,12 +35,21 @@ void OnloadSYS(_SYS_INFO *info) {
    memcpy(info -> Kernel, Release, ReleaseSize);
 }
 
+char *OnloadENV(const char *env) {
+    // load a custom environment variable
+    char * e = getenv(env);
+    if (e == NULL) {
+        return '\0';
+    }
+    return e;
+}
+
 void OnloadResult(_SYS_INFO *info) {
     char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW] = {
-        {CHECK, " Terminal ", ARROW, " ",  info -> Terminal},
-        {CHECK, " Kernel   ", ARROW, " ",  info -> Kernel},
-        {CHECK, " Desktop  ", ARROW, " ",  info -> Desktop},
-        {CHECK, " Time     ", ARROW, " ",  info -> Time}
+        {COMPLETE, " Terminal ", SEPERATOR, " ",  info -> Terminal},
+        {COMPLETE, " Kernel   ", SEPERATOR, " ",  info -> Kernel},
+        {COMPLETE, " Desktop  ", SEPERATOR, " ",  info -> Desktop},
+        {COMPLETE, " Time     ", SEPERATOR, " ",  info -> Time}
     };
 
     size_t i, j;
