@@ -26,10 +26,11 @@ include/colourbar and include/onload. This allows for you to control output give
 configure the colour bar settings (if you dont like the current look), and set custom time string
 along with being able to write your own methods if you so like.
 
-The example colourbar `BAR_ARRAY` defined in colourbar.h
+
+The example colourbar `BLOCK_ARRAY` defined in colourbar.h
 
 ```c
-const char *BAR_ARRAY[MAX_COLOUR_SIZE] {
+const char *BLOCK_ARRAY[MAX_COLOUR_SIZE] {
     DRK_BAR,           BAR, RESET,
     RED_LGHT_BAR,      BAR, RESET,
     GREEN_DRK_BAR,     BAR, RESET,
@@ -58,6 +59,12 @@ char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW] = {
     {CHECK, " Desktop  ", ARROW, " ",  info -> Desktop},
     {CHECK, " Time     ", ARROW, " ",  info -> Time}
 };
+```
+
+To change the time format modify the `TIME_FMT` definition in include/colourbar header.
+
+```c
+#define TIME_FMT "%I:%M:%S"
 ```
 
 <h2>Note</h2>
