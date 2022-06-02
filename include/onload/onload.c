@@ -8,31 +8,34 @@
 #include "../colourbar/colourbar.h" 
 
 void OnloadSYS(_SYS_INFO *info) {
-   // load uname system information 
-   time_t now;
-   struct tm *timeinfo;
-   time(&now);
-   timeinfo = localtime(&now);
+    time_t now = time(&now);
+    struct tm *timeinfo = localtime(&now);
 
-   char buffer[0x50];
-   strftime(buffer, 0x50, TIME_FMT, timeinfo);
-   int TimeBufferSize = strlen(buffer)+1;
+    int TimeBufferSize = 0xa;
+    char *TimeBuffer = (char*)malloc(sizeof(char)*TimeBufferSize);
+    int strftimeResult = strftime(TimeBuffer, TimeBufferSize, TIME_FMT, timeinfo);
 
-   struct utsname uname_info; 
-   uname(&uname_info);
+    while (strftimeResult == 0) {
+       free(TimeBuffer);
+       TimeBufferSize *= 2;
+       TimeBuffer = (char*)malloc(sizeof(char)*TimeBufferSize);
+       strftimeResult = strftime(TimeBuffer, TimeBufferSize, TIME_FMT, timeinfo);
+   }
+    struct utsname uname_info; 
+    uname(&uname_info);
 
-   char *Release    = uname_info . release;
-   int ReleaseSize  = strlen(Release)+1;
+    char *Release    = uname_info . release;
+    int ReleaseSize  = strlen(Release)+1;
 
-   char *TERM       = getenv("TERM");
-   char *DESKTOP    = getenv("XDG_CURRENT_DESKTOP"); 
+    char *TERM       = getenv("TERM");
+    char *DESKTOP    = getenv("XDG_CURRENT_DESKTOP"); 
    
-   info -> Terminal = TERM     != NULL ? TERM              : "n/a";
-   info -> Desktop  = DESKTOP  != NULL ? DESKTOP           : "n/a";
-   info -> Time     = timeinfo != NULL ? asctime(timeinfo) : "n/a";
+    info -> Terminal = TERM     != NULL ? TERM              : "n/a";
+    info -> Desktop  = DESKTOP  != NULL ? DESKTOP           : "n/a";
+    info -> Time     = timeinfo != NULL ? asctime(timeinfo) : "n/a";
    
-   memcpy(info -> Time,   buffer,  TimeBufferSize);
-   memcpy(info -> Kernel, Release, ReleaseSize);
+    memcpy(info -> Time,   TimeBuffer,  TimeBufferSize);
+    memcpy(info -> Kernel, Release, ReleaseSize);
 }
 
 char *OnloadENV(const char *env) {
