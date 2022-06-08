@@ -28,14 +28,16 @@ along with being able to write your own methods if you so please.<p>
 
 The project hierarchy
 
+```
 onload
 ├── include
 │   ├── colourbar
-│   │   ├── [colourbar.c](https://github.com/wnstdrr/onload/tree/main/include/colourbar/colourbar.c)
-│   │   └── [colourbar.h](https://github.com/wnstdrr/onload/tree/main/include/colourbar/colourbar.h)
+│   │   ├── colourbar.c
+│   │   └── colourbar.h
 │   └── onload
-│       ├── [onload.c](https://github.com/wnstdrr/onload/blob/main/include/onload/onload.c)
-│       └── [onload.h](https://github.com/wnstdrr/onload/blob/main/include/onload/onload.h)
+│       ├── onload.c
+│       └── onload.h
+```
 
 The example colourbar `BLOCK_ARRAY` defined in include/colourbar/colourbar.h
 
