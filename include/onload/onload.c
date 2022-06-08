@@ -1,12 +1,32 @@
 #include <sys/utsname.h>
 #include <stdlib.h>
-#include <time.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
+#include <time.h>
+
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <unistd.h>
 
 #include "onload.h"
 #include "../colourbar/colourbar.h" 
 
+/*return char pointer*/
+char* DeviceAddress(void) {
+    char *Host = (char*)malloc(sizeof(char)*0xff);
+    char *IP;
+
+    struct hostent *HostInfo;
+    gethostname(Host, sizeof(Host)); 
+    strncat(Host, ".local", 0x7);
+    
+    HostInfo = gethostbyname(Host);
+    IP = inet_ntoa(*(struct in_addr*)HostInfo -> h_addr_list[0]);
+    free(Host);
+    return IP;
+}
 
 char *Packages(void) {
     /* DISCLAIMER:
@@ -85,25 +105,26 @@ void OnloadSYS(_SYS_INFO *info) {
     char *packages   = Packages();
     char *time       = Time();
     char *kernel     = Kernel();
+    char *address    = DeviceAddress();
 
     info -> Packages = packages;
     info -> Terminal = terminal != NULL ? terminal : "n/a";
     info -> Desktop  = desktop  != NULL ? desktop  : "n/a";
     info -> Time     = time;
     info -> Kernel   = kernel;
+    info -> ipv4     = address;
 }
 
 void OnloadResult(_SYS_INFO *info) {
     char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW] = {
         {COMPLETE, " Terminal ", SEPERATOR, " ",  info -> Terminal},
         {COMPLETE, " Kernel   ", SEPERATOR, " ",  info -> Kernel},
-        {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> Packages},
         {COMPLETE, " Desktop  ", SEPERATOR, " ",  info -> Desktop},
         {COMPLETE, " Time     ", SEPERATOR, " ",  info -> Time}
     };
 
     size_t i, j;
-    for (j = 0; j < 5; j++) {
+    for (j = 0; j < 4; j++) {
         for (i = 0; i < MAX_RESULT_ROW; i++) {
             fprintf(stdout, "%s", RESULT[j][i]);
         }
