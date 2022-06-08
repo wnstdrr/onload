@@ -13,10 +13,12 @@ typedef struct _SYS_INFO {
     char *Desktop;
     char *Time;
     char *Kernel;
+    char *ipv4;
 } _SYS_INFO;
 
 extern char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW];
 
+extern char *DeviceAddress(void);
 extern char *Packages(void);
 extern char *Terminal(void);
 extern char *Desktop(void);
