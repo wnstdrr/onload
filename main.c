@@ -1,11 +1,8 @@
 #include "include/colourbar/colourbar.h"
 #include "include/onload/onload.h"
 
-<<<<<<< HEAD
 #include <stdlib.h>
 
-=======
->>>>>>> refs/remotes/origin/main
 int main(void) {
     _SYS_INFO sys_info;
     OnloadSYS(&sys_info);
