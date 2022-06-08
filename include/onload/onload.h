@@ -4,18 +4,22 @@
 #include "../colourbar/colourbar.h"
 
 #define TIME_FMT       "%X"
-#define MAX_RESULT_COL 15 
+#define MAX_RESULT_COL 20 
 #define MAX_RESULT_ROW 5
 
 typedef struct _SYS_INFO {
+    char *Packages;
     char *Terminal;
     char *Desktop;
     char *Time;
-    char *Arch;
     char *Kernel;
 } _SYS_INFO;
 
 extern char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW];
+
+extern char *Packages(void);
+extern char *Terminal(void);
+extern char *Desktop(void);
 extern char *OnloadENV(const char *env);
 extern void OnloadSYS(_SYS_INFO *info);
 extern void OnloadResult(_SYS_INFO *info);
