@@ -18,8 +18,13 @@ char* DeviceAddress(void) {
     char *Host = (char*)malloc(sizeof(char)*0xff);
     char *IP;
 
+    int Hostname;
+
     struct hostent *HostInfo;
-    gethostname(Host, sizeof(Host)); 
+    Hostname = gethostname(Host, sizeof(Host)); 
+    if (Hostname <= 0) {
+        return '\0';
+    }
     strncat(Host, ".local", 0x7);
     
     HostInfo = gethostbyname(Host);
@@ -40,12 +45,10 @@ char *Packages(void) {
     // will probably add support for others later but
     // that gets tedious with all the package managers.
     FILE *PackageStream = popen("dpkg -l | egrep -c '^ii' | tr -d '\n'", "r");
-    if (PackageStream == NULL) {
-        Packages[size] = '\0';
-    }
 
     while (fgets(Packages, size, PackageStream) != NULL) {
-        Packages[size] = '\0';
+        continue;
+        //Packages[size] = '\0';
     }
     pclose(PackageStream);
     return Packages;
