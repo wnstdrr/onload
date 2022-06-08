@@ -103,14 +103,14 @@ void OnloadSYS(_SYS_INFO *info) {
     char *terminal   = Terminal();
     char *desktop    = Desktop(); 
     char *packages   = Packages();
-    char *time       = Time();
+    char *system_t   = Time();
     char *kernel     = Kernel();
     char *address    = DeviceAddress();
 
     info -> Packages = packages;
     info -> Terminal = terminal != NULL ? terminal : "n/a";
     info -> Desktop  = desktop  != NULL ? desktop  : "n/a";
-    info -> Time     = time;
+    info -> Time     = system_t;
     info -> Kernel   = kernel;
     info -> ipv4     = address;
 }
