@@ -1,10 +1,9 @@
-<h3 align="center"><img src=https://user-images.githubusercontent.com/12807776/171079551-ebbb3380-ecda-4d14-91f8-bb0ced48f578.png alt="onload" height="125px"></h3>
+<h3 align="center"><img src=https://user-images.githubusercontent.com/12807776/172697062-e698a475-cebc-4856-836c-de510664f225.png alt="onload" height="125px"></h3>
 
 <p align="center">Command line system information tool written in C.<p>
 
 <h2 align="left">Requirements</h2>
 
-  * libcpuid-dev (>= 0.4.1-1.1) > Not yet required...
   * gcc
   * make
 
@@ -64,7 +63,7 @@ char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW] = {
 To change the time format modify the `TIME_FMT` definition in include/colourbar header.
 
 ```c
-#define TIME_FMT "%I:%M:%S"
+#define TIME_FMT "%a %b %d %I:%M:%S %Y"
 ```
 
 <h2>Note</h2>
