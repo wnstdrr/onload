@@ -1,8 +1,6 @@
 #include "include/colourbar/colourbar.h"
 #include "include/onload/onload.h"
 
-#include <stdio.h>
-
 int main(void) {
     _SYS_INFO sys_info;
     OnloadSYS(&sys_info);
