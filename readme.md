@@ -1,4 +1,4 @@
-<h3 align="center"><img src=https://user-images.githubusercontent.com/12807776/172698180-9a5df392-656e-4c80-91d2-468d6b38e238.png alt="onload" height="125px"></h3>
+<h3 align="center"><img src=https://user-images.githubusercontent.com/12807776/172698180-9a5df392-656e-4c80-91d2-468d6b38e238.png alt="onload" title="onload example" height="125px"></h3>
 
 <p align="center">Command line system information tool written in C.<p>
 
@@ -20,13 +20,24 @@ sudo make install
 
 <h2>Configuring</h2>
 
-To configure onload you can customize the headers located in
+<p>To configure onload you can customize the headers located in
 include/colourbar and include/onload. This allows for you to control output given in results,
 configure the colour bar settings (if you dont like the current look), and set custom time string
-along with being able to write your own methods if you so like.
+along with being able to write your own methods if you so please.<p>
 
 
-The example colourbar `BLOCK_ARRAY` defined in colourbar.h
+The project hierarchy
+
+onload
+├── include
+│   ├── colourbar
+│   │   ├── [colourbar.c](https://github.com/wnstdrr/onload/tree/main/include/colourbar/colourbar.c)
+│   │   └── [colourbar.h](https://github.com/wnstdrr/onload/tree/main/include/colourbar/colourbar.h)
+│   └── onload
+│       ├── [onload.c](https://github.com/wnstdrr/onload/blob/main/include/onload/onload.c)
+│       └── [onload.h](https://github.com/wnstdrr/onload/blob/main/include/onload/onload.h)
+
+The example colourbar `BLOCK_ARRAY` defined in include/colourbar/colourbar.h
 
 ```c
 const char *BLOCK_ARRAY[MAX_COLOUR_SIZE] {
@@ -48,19 +59,21 @@ const char *BLOCK_ARRAY[MAX_COLOUR_SIZE] {
     WHITE_DRK_BAR,     BAR, RESET
 };
 ```
+The example output `RESULT` defined in include/onload/onload.h
 
-The example output `RESULT` defined in onload.h
+<p>Customizing this array allows for users to create their own results look and feel.<p>
 
 ```c
 char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW] = {
     {CHECK, " Terminal ", ARROW, " ",  info -> Terminal},
     {CHECK, " Kernel   ", ARROW, " ",  info -> Kernel},
+    {CHECK, " Pkgs     ", ARROW, " ",  info -> Packages},
     {CHECK, " Desktop  ", ARROW, " ",  info -> Desktop},
     {CHECK, " Time     ", ARROW, " ",  info -> Time}
 };
 ```
 
-To change the time format modify the `TIME_FMT` definition in include/colourbar header.
+To change the time format modify the `TIME_FMT` definition in include/onload header.
 
 ```c
 #define TIME_FMT "%a %b %d %I:%M:%S %Y"
