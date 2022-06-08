@@ -9,6 +9,10 @@
 
 
 char *Packages(void) {
+    /* DISCLAIMER:
+     * if you really care this slows the program down
+     * by about 0.037ms because popen supplied command is slow...
+     * */
     const int size = 0xa;
     char *Packages = (char*)malloc(sizeof(char)*size);
 
@@ -29,7 +33,7 @@ char *Packages(void) {
 
 char *OnloadENV(const char *env) {
     // load a custom environment variable
-    char * e = getenv(env);
+    char *e = getenv(env);
     if (e == NULL) {
         return '\0';
     }
@@ -46,7 +50,7 @@ char *Desktop(void) {
     return Desk;
 }
 
-void OnloadSYS(_SYS_INFO *info) {
+char *Time(void) {
     time_t now = time(&now);
     struct tm *timeinfo = localtime(&now);
 
@@ -59,24 +63,34 @@ void OnloadSYS(_SYS_INFO *info) {
        TimeBufferSize *= 2;
        TimeBuffer = (char*)malloc(sizeof(char)*TimeBufferSize);
        strftimeResult = strftime(TimeBuffer, TimeBufferSize, TIME_FMT, timeinfo);
-   }
-    struct utsname uname_info; 
+    } 
+    return TimeBuffer;
+}
+
+char *Kernel(void) {
+    struct utsname uname_info;
     uname(&uname_info);
 
-    char *Release    = uname_info . release;
-    int ReleaseSize  = strlen(Release)+1;
+    char * ReleaseName = uname_info . release;
+    int PopcornSize = strlen(ReleaseName)+1;
 
+    char *popcorn = (char*)malloc(sizeof(char)*PopcornSize);
+    memcpy(popcorn, ReleaseName, PopcornSize);
+    return popcorn;
+}
+
+void OnloadSYS(_SYS_INFO *info) {
     char *terminal   = Terminal();
     char *desktop    = Desktop(); 
     char *packages   = Packages();
-   
+    char *time       = Time();
+    char *kernel     = Kernel();
+
     info -> Packages = packages;
     info -> Terminal = terminal != NULL ? terminal : "n/a";
     info -> Desktop  = desktop  != NULL ? desktop  : "n/a";
-    info -> Time     = timeinfo != NULL ? asctime(timeinfo) : "n/a";
-   
-    memcpy(info -> Time,   TimeBuffer,  TimeBufferSize);
-    memcpy(info -> Kernel, Release, ReleaseSize);
+    info -> Time     = time;
+    info -> Kernel   = kernel;
 }
 
 void OnloadResult(_SYS_INFO *info) {
