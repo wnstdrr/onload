@@ -14,7 +14,6 @@ and portable since you can configure settings through the headers.<p>
 
 To install run
 ```console
-make
 sudo make install
 ```
 
