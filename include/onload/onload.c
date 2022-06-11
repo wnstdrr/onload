@@ -66,11 +66,32 @@ char *desk_O(void) {
 
 char *pkgs_O(void) {
     const int size = 0xa;
-    char *Packages = (char*)malloc(sizeof(char)*size);
+    char *dist = dist_O();
 
-    // only supports whatever string you give popen
-    // as your package count, automating in the future...
-    FILE *PackageStream = popen("xbps-query -l | egrep -c '^ii' | tr -d '\n'", "r");
+    char *pkgstring = "";
+    char *defaultpkg = "dpkg -l | egrep '^ii' | wc -l | tr -d '\n'";
+    char *packs[][3] = {
+        {"VoidLinux", "xbps-query -l | egrep -c '^ii' | tr -d '\n'"},
+        {"Arch", "pacman -Q | wc -l | tr -d '\n'"}
+    };
+    size_t i, j;
+    int pkgstringLength;
+    int distroFound;
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 2; j++) {
+            if (strcmp(dist, packs[i][0]) == 0) {
+                distroFound = 1;
+                pkgstringLength = strlen(packs[i][j+1])+1;
+                memcpy(&pkgstring, &packs[i][j+1], pkgstringLength);
+                break;
+            }
+        }
+    }
+    if (distroFound != 1) {
+        pkgstring = defaultpkg;
+    }
+    char *Packages = (char*)malloc(sizeof(char)*size);
+    FILE *PackageStream = popen(pkgstring, "r");
     fgets(Packages, size, PackageStream);
     pclose(PackageStream);
     return Packages;
