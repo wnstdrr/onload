@@ -13,9 +13,21 @@
 #include "onload.h"
 #include "../colourbar/colourbar.h" 
 
-/*return char pointer*/
+char *Dist(void) {
+    // return the current distro
+    const int size = 0xa;
+    char *buf = (char*)malloc(sizeof(char) * size);
+
+    FILE *distro_stream;
+    distro_stream = popen("lsb_release -is", "r");
+    fgets(buf, size, distro_stream);
+
+    return buf;
+}
+
 char* DeviceAddress(void) {
-    char *Host = (char*)malloc(sizeof(char)*0xff);
+    const int size = 0xa;
+    char *Host = (char*)malloc(sizeof(char) * size);
     char *IP;
 
     int Hostname;
@@ -29,26 +41,19 @@ char* DeviceAddress(void) {
     
     HostInfo = gethostbyname(Host);
     IP = inet_ntoa(*(struct in_addr*)HostInfo -> h_addr_list[0]);
-    free(Host);
     return IP;
 }
 
 char *Packages(void) {
-    /* DISCLAIMER:
-     * if you really care this slows the program down
-     * by about 0.037ms because popen supplied command is slow...
-     * */
     const int size = 0xa;
     char *Packages = (char*)malloc(sizeof(char)*size);
 
-    // assumes debian distro for now **the easy way**
-    // will probably add support for others later but
-    // that gets tedious with all the package managers.
-    FILE *PackageStream = popen("dpkg -l | egrep -c '^ii' | tr -d '\n'", "r");
+    // only supports whatever string you give popen
+    // as your package count, automating in the future...
+    FILE *PackageStream = popen("xbps-query -l | egrep -c '^ii' | tr -d '\n'", "r");
 
     while (fgets(Packages, size, PackageStream) != NULL) {
         continue;
-        //Packages[size] = '\0';
     }
     pclose(PackageStream);
     return Packages;
@@ -109,21 +114,23 @@ void OnloadSYS(_SYS_INFO *info) {
     char *system_t   = Time();
     char *kernel     = Kernel();
     char *address    = DeviceAddress();
+    char *osname     = Dist();
 
     info -> Packages = packages;
     info -> Terminal = terminal != NULL ? terminal : "n/a";
     info -> Desktop  = desktop  != NULL ? desktop  : "n/a";
     info -> Time     = system_t;
     info -> Kernel   = kernel;
+    info -> osname   = osname;
     info -> ipv4     = address;
 }
 
 void OnloadResult(_SYS_INFO *info) {
     char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW] = {
-        {COMPLETE, " Terminal ", SEPERATOR, " ",  info -> Terminal},
+        {COMPLETE, " Osname   ", SEPERATOR, " ",  info -> osname},
         {COMPLETE, " Kernel   ", SEPERATOR, " ",  info -> Kernel},
         {COMPLETE, " Desktop  ", SEPERATOR, " ",  info -> Desktop},
-        {COMPLETE, " Time     ", SEPERATOR, " ",  info -> Time}
+        {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> Packages}, 
     };
 
     size_t i, j;
