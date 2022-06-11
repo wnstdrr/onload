@@ -93,7 +93,9 @@ char *pkgs_O(void) {
     }
     char *Packages = (char*)malloc(sizeof(char)*size);
     FILE *PackageStream = popen(pkgstring, "r");
-    fgets(Packages, size, PackageStream);
+    if (fgets(Packages, size, PackageStream) == NULL) {
+        return '\0';
+    }
     pclose(PackageStream);
     return Packages;
 }
@@ -150,7 +152,9 @@ char *dist_O(void) {
 
     FILE *distro_stream;
     distro_stream = popen("lsb_release -is", "r");
-    fgets(buf, size, distro_stream);
+    if (fgets(buf, size, distro_stream) == NULL) {
+        return '\0';
+    }
     pclose(distro_stream);
     return buf;
 }
