@@ -74,6 +74,8 @@ char *out_array[MAX_RESULT_COL][MAX_ROW_LEN] = {
 };
 ```
 
+For a complete list of items to customize the `output_o` look at the `_sys_o` typedef struct in include/onload/onload.h 
+
 To change the time format modify the `TIME_FMT` definition in include/onload header.
 
 ```c
