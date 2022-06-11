@@ -11,6 +11,7 @@ clean:
 	rm /usr/local/share/man/man1/onload.1.gz
 
 install:
+	$(CC) -o onload main.c include/colourbar/colourbar.c include/onload/onload.c $(CFLAGS)
 	mv onload $(INSTALL_PATH)
 	mkdir -p /usr/local/share/man/man1
 	cp onload.1 /usr/local/share/man/man1/onload.1

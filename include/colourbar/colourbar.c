@@ -22,17 +22,17 @@ const char *BLOCK_ARRAY[MAX_COLOUR_SIZE] = {
         WHITE_DRK_BLOCK,     BLOCK, RESET
 };
 
-void Colourbar(const int rot) { 
+void c_bar(const int mod) { 
     /* 6 for perfect vertical rectangle
      * 24 for perfect horizontal rectangle
-     * probably a better method exits but im bad at math
+     * a better method probably exists
      */
-    size_t i;
-    for (i = 0; i < MAX_COLOUR_SIZE; i++) {
-        if (i % rot == 0) {
+    size_t row;
+    for (row = 0; row < MAX_COLOUR_SIZE; row++) {
+        if (row % mod == 0) {
             fprintf(stdout, "%c", '\n');
         }
-        fprintf(stdout, "%s", *(BLOCK_ARRAY + i));
+        fprintf(stdout, "%s", *(BLOCK_ARRAY + row));
     }
     fprintf(stdout, "%c", '\n');
 }

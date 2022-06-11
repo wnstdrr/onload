@@ -1,6 +1,6 @@
 <h3 align="center"><img src=https://user-images.githubusercontent.com/12807776/172698180-9a5df392-656e-4c80-91d2-468d6b38e238.png alt="onload" title="onload example" height="125px"></h3>
 
-<p align="center">Command line system information tool written in C.<p>
+<p align="center">Command-line system information tool written in C<p>
 
 <h2 align="left">Requirements</h2>
 
@@ -63,15 +63,15 @@ const char *BLOCK_ARRAY[MAX_COLOUR_SIZE] {
 ```
 The example output `RESULT` defined in include/onload/onload.h
 
-<p>Customizing this array allows for users to create their own results look and feel.<p>
+Customizing this array allows for you to create your own results look and feel.
+Just make sure you change the `MAX_COL_LEN` to account for the new array size.
 
 ```c
-char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW] = {
-    {CHECK, " Terminal ", ARROW, " ",  info -> Terminal},
+char *out_array[MAX_RESULT_COL][MAX_ROW_LEN] = {
+    {CHECK, " Osname ", ARROW, " ",  info -> Terminal},
     {CHECK, " Kernel   ", ARROW, " ",  info -> Kernel},
-    {CHECK, " Pkgs     ", ARROW, " ",  info -> Packages},
     {CHECK, " Desktop  ", ARROW, " ",  info -> Desktop},
-    {CHECK, " Time     ", ARROW, " ",  info -> Time}
+    {CHECK, " Pkgs     ", ARROW, " ",  info -> Packages}
 };
 ```
 

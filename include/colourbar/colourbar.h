@@ -5,8 +5,8 @@
 
 /* Unicode Characters */
 #define BLOCK           "\u2588\u2588\u2588"
-#define SEPERATOR       "\033[95m\u2794\033[0m"
-#define COMPLETE        "[\033[92m\u2714\033[0m]"
+#define SEPERATOR       "\033[95m\uf178\033[0m"
+#define COMPLETE        "[\033[92m\uf00c\033[0m]"
 
 /* BLOCK Colour definitions */
 #define LGHT_BLOCK        "\033[90;100m"
@@ -37,6 +37,6 @@
 #define RESET           "\033[0m"
 
 extern const char *BLOCK_ARRAY[MAX_COLOUR_SIZE];
-extern void Colourbar(const int rot);
+extern void c_bar(const int mod);
 
 #endif /* _COLOURBLOCK_H */

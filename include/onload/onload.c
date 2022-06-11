@@ -13,72 +13,70 @@
 #include "onload.h"
 #include "../colourbar/colourbar.h" 
 
-char *Dist(void) {
-    // return the current distro
-    const int size = 0xa;
-    char *buf = (char*)malloc(sizeof(char) * size);
-
-    FILE *distro_stream;
-    distro_stream = popen("lsb_release -is", "r");
-    fgets(buf, size, distro_stream);
-
-    return buf;
-}
-
-char* DeviceAddress(void) {
-    const int size = 0xa;
-    char *Host = (char*)malloc(sizeof(char) * size);
-    char *IP;
-
-    int Hostname;
-
-    struct hostent *HostInfo;
-    Hostname = gethostname(Host, sizeof(Host)); 
-    if (Hostname <= 0) {
-        return '\0';
+void output_O(_sys_o *info) {
+    char *out_array[MAX_RESULT_COL][MAX_ROW_LEN] = {
+        {COMPLETE, " Osname   ", SEPERATOR, " ",  info -> dist},
+        {COMPLETE, " Kernel   ", SEPERATOR, " ",  info -> kernel},
+        {COMPLETE, " Desktop  ", SEPERATOR, " ",  info -> desk},
+        {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> pkgs}, 
+    };
+    size_t col, row;
+    for (col = 0; col < MAX_COL_LEN; col++) {
+        for (row = 0; row < MAX_ROW_LEN; row++) {
+            fprintf(stdout, "%s", out_array[col][row]);
+        }
+        fprintf(stdout, "%c", '\n');
     }
-    strncat(Host, ".local", 0x7);
-    
-    HostInfo = gethostbyname(Host);
-    IP = inet_ntoa(*(struct in_addr*)HostInfo -> h_addr_list[0]);
-    return IP;
 }
 
-char *Packages(void) {
+void sys_O(_sys_o *info) {
+    char *terminal, *desktop, *pkgs, *date, *kernel, *addrv4, *dist;
+    
+    terminal = term_O();
+    desktop  = desk_O();
+    pkgs     = pkgs_O();
+    date     = date_O();
+    kernel   = kernel_O();
+    addrv4   = dev_addr_v4_O();
+    dist     = dist_O();
+
+    info -> term    = terminal != NULL ? terminal : "n/a";
+    info -> desk    = desktop  != NULL ? desktop  : "n/a";
+    info -> pkgs    = pkgs     != NULL ? pkgs     : "n/a";
+    info -> date    = date;
+    info -> kernel  = kernel;
+    info -> addr_v4 = addrv4;
+    info -> dist    = dist;
+}
+
+char *env_O(const char *env) {
+    char *e = getenv(env);
+    return e == NULL ? '\0' : e;
+}
+
+char *term_O(void) {
+    char *Term = env_O("TERM");
+    return Term;
+}
+
+char *desk_O(void) {
+    char *Desk = env_O("XDG_CURRENT_DESKTOP");
+    return Desk;
+}
+
+char *pkgs_O(void) {
     const int size = 0xa;
     char *Packages = (char*)malloc(sizeof(char)*size);
 
     // only supports whatever string you give popen
     // as your package count, automating in the future...
     FILE *PackageStream = popen("xbps-query -l | egrep -c '^ii' | tr -d '\n'", "r");
-
-    while (fgets(Packages, size, PackageStream) != NULL) {
-        continue;
-    }
+    fgets(Packages, size, PackageStream);
     pclose(PackageStream);
     return Packages;
 }
 
-char *OnloadENV(const char *env) {
-    // load a custom environment variable
-    char *e = getenv(env);
-    if (e == NULL) {
-        return '\0';
-    }
-    return e;
-}
-
-char *Terminal(void) {
-    char *Term = OnloadENV("TERM");
-    return Term;
-}
-
-char *Desktop(void) {
-    char *Desk = OnloadENV("XDG_CURRENT_DESKTOP");
-    return Desk;
-}
-
-char *Time(void) {
+char *date_O(void) {
     time_t now = time(&now);
     struct tm *timeinfo = localtime(&now);
 
@@ -95,7 +93,7 @@ char *Time(void) {
     return TimeBuffer;
 }
 
-char *Kernel(void) {
+char *kernel_O(void) {
     struct utsname uname_info;
     uname(&uname_info);
 
@@ -107,37 +105,30 @@ char *Kernel(void) {
     return popcorn;
 }
 
-void OnloadSYS(_SYS_INFO *info) {
-    char *terminal   = Terminal();
-    char *desktop    = Desktop(); 
-    char *packages   = Packages();
-    char *system_t   = Time();
-    char *kernel     = Kernel();
-    char *address    = DeviceAddress();
-    char *osname     = Dist();
+char* dev_addr_v4_O(void) {
+    const int size = 0xa;
+    char *Host = (char*)malloc(sizeof(char) * size);
+    char *IP;
 
-    info -> Packages = packages;
-    info -> Terminal = terminal != NULL ? terminal : "n/a";
-    info -> Desktop  = desktop  != NULL ? desktop  : "n/a";
-    info -> Time     = system_t;
-    info -> Kernel   = kernel;
-    info -> osname   = osname;
-    info -> ipv4     = address;
+    int Hostname;
+    struct hostent *HostInfo;
+    Hostname = gethostname(Host, sizeof(Host)); 
+    if (Hostname <= 0) {
+        return '\0';
+    }
+    strncat(Host, ".local", 0x7);
+    HostInfo = gethostbyname(Host);
+    IP = inet_ntoa(*(struct in_addr*)HostInfo -> h_addr_list[0]);
+    return IP;
 }
 
-void OnloadResult(_SYS_INFO *info) {
-    char *RESULT[MAX_RESULT_COL][MAX_RESULT_ROW] = {
-        {COMPLETE, " Osname   ", SEPERATOR, " ",  info -> osname},
-        {COMPLETE, " Kernel   ", SEPERATOR, " ",  info -> Kernel},
-        {COMPLETE, " Desktop  ", SEPERATOR, " ",  info -> Desktop},
-        {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> Packages}, 
-    };
+char *dist_O(void) {
+    const int size = 0xa;
+    char *buf = (char*)malloc(sizeof(char) * size);
 
-    size_t i, j;
-    for (j = 0; j < 4; j++) {
-        for (i = 0; i < MAX_RESULT_ROW; i++) {
-            fprintf(stdout, "%s", RESULT[j][i]);
-        }
-        fprintf(stdout, "%c", '\n');
-    }
+    FILE *distro_stream;
+    distro_stream = popen("lsb_release -is", "r");
+    fgets(buf, size, distro_stream);
+    pclose(distro_stream);
+    return buf;
 }

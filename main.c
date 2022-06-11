@@ -4,16 +4,11 @@
 #include <stdlib.h>
 
 int main(void) {
-    _SYS_INFO sys_info;
-    OnloadSYS(&sys_info);
+    _sys_o *sys_o = (_sys_o*)malloc(sizeof(_sys_o));
+    sys_O(sys_o);
 
-    // Load Horizontal Colourbar & Results
-    Colourbar(24);
-    OnloadResult(&sys_info);
-   
-    /* Release dynamic memory from strut members */
-    free(sys_info . Packages);
-    free(sys_info . Time);
-    free(sys_info . Kernel);
+    c_bar(24);
+    output_O(sys_o);
+    free(sys_o);
     return 0;
 }
