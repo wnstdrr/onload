@@ -193,7 +193,9 @@ char *sysup_O(void) {
     struct timespec tm;
     clock_gettime(CLOCK_MONOTONIC_RAW, &tm);
     unsigned long long days, hours, minutes, seconds;
-    char *tmstr = (char*)malloc(sizeof(char) * 0xff);
+    const int size = 0xff;
+    char *tmstr;
+    tmstr = (char*)malloc(sizeof(char) * size);
 
     seconds = tm . tv_sec;
     days    = seconds / 86400;
