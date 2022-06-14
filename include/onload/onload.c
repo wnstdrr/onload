@@ -13,24 +13,25 @@
 #include "onload.h"
 #include "../colourbar/colourbar.h" 
 
-void output_O(_sys_o *info) {
-    char *out_array[MAX_RESULT_COL][MAX_ROW_LEN] = {
+extern void output_O(_sys_o *info) {
+    register size_t col, row;
+    const char *out_array[MAX_RESULT_COL][MAX_ROW_LEN] = {
         {COMPLETE, " Osname   ", SEPERATOR, " ",  info -> dist},
         {COMPLETE, " Kernel   ", SEPERATOR, " ",  info -> kernel},
         {COMPLETE, " Desktop  ", SEPERATOR, " ",  info -> desk},
         {COMPLETE, " Uptime   ", SEPERATOR, " ",  info -> sysup},
-        {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> pkgs}, 
+        {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> pkgs}
     };
-    size_t col, row;
+    const char *(*OUT)[MAX_RESULT_COL][MAX_ROW_LEN] = &out_array;
     for (col = 0; col < MAX_COL_LEN; col++) {
         for (row = 0; row < MAX_ROW_LEN; row++) {
-            fprintf(stdout, "%s", *(*(out_array + col) + row));
+            fprintf(stdout, "%s", *(*(*OUT + col) + row));
         }
         fprintf(stdout, "%c", '\n');
     }
 }
 
-void sys_O(_sys_o *info) {
+extern void sys_O(_sys_o *info) {
     char *terminal, *desktop, *pkgs, *date, *kernel, *addrv4, *dist, *sysup;
     
     terminal = term_O();
@@ -52,24 +53,38 @@ void sys_O(_sys_o *info) {
     info -> sysup   = sysup;
 }
 
-char *env_O(const char *env) {
-    char *e = getenv(env);
+extern inline _sys_o *sys_dyn_O(void) {
+    _sys_o *sys_o;
+    sys_o = (_sys_o*)malloc(sizeof(_sys_o));
+    return sys_o;
+}
+extern inline void free_O(void *ptr) {
+    free(ptr);
+}
+
+extern inline char *env_O(const char *env) {
+    char *e; 
+    e = getenv(env);
     return e == NULL ? '\0' : e;
 }
 
-char *term_O(void) {
-    char *Term = env_O("TERM");
+extern inline char *term_O(void) {
+    char *Term ;
+    Term = env_O("TERM");
     return Term;
 }
 
-char *desk_O(void) {
-    char *Desk = env_O("XDG_CURRENT_DESKTOP");
+extern inline char *desk_O(void) {
+    char *Desk;
+    Desk = env_O("XDG_CURRENT_DESKTOP");
     return Desk;
 }
 
 char *pkgs_O(void) {
     const int size = 0x32;
-    char *dist = dist_O();
+    char *dist, *Packages;
+    FILE *PackageStream;
+    dist = dist_O();
 
     char pkgstring[size];
     char *defaultpkg = "dpkg -l | egrep '^ii' | wc -l | tr -d '\n'";
@@ -77,14 +92,16 @@ char *pkgs_O(void) {
         {"VoidLinux", "xbps-query -l | egrep -c '^ii' | tr -d '\n'"},
         {"Arch", "pacman -Q | wc -l | tr -d '\n'"}
     };
-    size_t i, j;
+    register size_t i, j;
     int pkgstringLength;
     int distroFound = 0;
+
+    char *(*pak)[][3] = &packs;
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
-            if (strcmp(dist, *(*(packs + i) + 0)) == 0) {
-                pkgstringLength = strlen( *(*(packs + i)  + (j + 1) ) )+1;
-                memcpy(&pkgstring, (*(*(packs + i) + (j + 1) )), sizeof(char) * pkgstringLength);
+            if (strcmp(dist, *(*(*pak + i) + 0)) == 0) {
+                pkgstringLength = strlen( *(*(*pak + i)  + (j + 1) ) )+1;
+                memcpy(&pkgstring, (*(*(*pak + i) + (j + 1) )), sizeof(char) * pkgstringLength);
                 distroFound = 1;
                 break;
             }
@@ -96,8 +113,8 @@ char *pkgs_O(void) {
         memcpy(&pkgstring, defaultpkg, pkgdefaultLength);
         distroFound = 1;
     }
-    char *Packages = (char*)malloc(sizeof(char)*size);
-    FILE *PackageStream = popen(pkgstring, "r");
+    Packages = (char*)malloc(sizeof(char) * size);
+    PackageStream = popen(pkgstring, "r");
     if (fgets(Packages, size, PackageStream) == NULL) {
         return '\0';
     }
@@ -106,17 +123,22 @@ char *pkgs_O(void) {
 }
 
 char *date_O(void) {
-    time_t now = time(&now);
-    struct tm *timeinfo = localtime(&now);
+    int TimeBufferSize, strftimeResult;
+    char *TimeBuffer;
+    time_t now;
+    struct tm *timeinfo; 
+    
+    now = time(&now);
+    timeinfo = localtime(&now);
 
-    int TimeBufferSize = 0xa;
-    char *TimeBuffer = (char*)malloc(sizeof(char)*TimeBufferSize);
-    int strftimeResult = strftime(TimeBuffer, TimeBufferSize, TIME_FMT, timeinfo);
+    TimeBufferSize = 0xa;
+    TimeBuffer = (char*)malloc(sizeof(char)*TimeBufferSize);
+    strftimeResult = strftime(TimeBuffer, TimeBufferSize, TIME_FMT, timeinfo);
 
     while (strftimeResult == 0) {
        free(TimeBuffer);
        TimeBufferSize *= 2;
-       TimeBuffer = (char*)malloc(sizeof(char)*TimeBufferSize);
+       TimeBuffer = (char*)malloc(sizeof(char) * TimeBufferSize);
        strftimeResult = strftime(TimeBuffer, TimeBufferSize, TIME_FMT, timeinfo);
     } 
     return TimeBuffer;
@@ -126,20 +148,22 @@ char *kernel_O(void) {
     struct utsname uname_info;
     uname(&uname_info);
 
-    char * ReleaseName = uname_info . release;
-    int PopcornSize = strlen(ReleaseName)+1;
+    char *ReleaseName, *popcorn;
+    int PopcornSize;
+    ReleaseName = uname_info . release;
+    PopcornSize = strlen(ReleaseName)+1;
 
-    char *popcorn = (char*)malloc(sizeof(char)*PopcornSize);
+    popcorn = (char*)malloc(sizeof(char) * PopcornSize);
     memcpy(popcorn, ReleaseName, PopcornSize);
     return popcorn;
 }
 
 char* dev_addr_v4_O(void) {
     const int size = 0xa;
-    char *Host = (char*)malloc(sizeof(char) * size);
-    char *IP;
-
+    char *Host, *IP;
     int Hostname;
+    Host = (char*)malloc(sizeof(char) * size);
+
     struct hostent *HostInfo;
     Hostname = gethostname(Host, sizeof(Host)); 
     if (Hostname <= 0) {
@@ -153,7 +177,8 @@ char* dev_addr_v4_O(void) {
 
 char *dist_O(void) {
     const int size = 0xa;
-    char *buf = (char*)malloc(sizeof(char) * size);
+    char *buf;
+    buf = (char*)malloc(sizeof(char) * size);
 
     FILE *distro_stream;
     distro_stream = popen("lsb_release -is", "r");

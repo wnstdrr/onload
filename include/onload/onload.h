@@ -18,9 +18,12 @@ typedef struct _sys_o {
     char *sysup;
 } _sys_o;
 
-extern char *out_array[MAX_RESULT_COL][MAX_ROW_LEN];
+extern const char *out_array[MAX_RESULT_COL][MAX_ROW_LEN];
 extern void output_O(_sys_o *info);
 extern void sys_O(_sys_o *info);
+
+extern _sys_o *sys_dyn_O(void);
+extern void free_O(void *ptr);
 
 extern char *env_O(const char *env);
 extern char *term_O(void);
