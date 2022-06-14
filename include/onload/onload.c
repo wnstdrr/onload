@@ -91,7 +91,9 @@ char *pkgs_O(void) {
         }
     }
     if (distroFound != 1) {
-        memcpy(&pkgstring, defaultpkg, strlen(defaultpkg)+1);
+        int pkgdefaultLength;
+        pkgdefaultLength = strlen(defaultpkg)+1;
+        memcpy(&pkgstring, defaultpkg, pkgdefaultLength);
         distroFound = 1;
     }
     char *Packages = (char*)malloc(sizeof(char)*size);
