@@ -2,6 +2,13 @@
 #define _COLOURBLOCK_H
 
 #define MAX_COLOUR_SIZE 48
+#define MAX_COLOUR_COL  16
+#define MAX_COLOUR_ROW  3
+
+#define C_BAR_MIN       1
+#define C_BAR_MAX       17
+
+#define C_BAR_LIMIT(n) (n < C_BAR_MIN || n > C_BAR_MAX)
 
 /* Unicode Characters */
 #define BLOCK           "\u2588\u2588\u2588"
@@ -36,7 +43,7 @@
 #define BLINK           "\033[5m"
 #define RESET           "\033[0m"
 
-extern const char *BLOCK_ARRAY[MAX_COLOUR_SIZE];
-extern void c_bar(const int mod);
+extern const char *BLOCK_ARRAY[MAX_COLOUR_COL][MAX_COLOUR_SIZE];
+extern signed int cbar(const int n);
 
 #endif /* _COLOURBLOCK_H */
