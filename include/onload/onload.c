@@ -18,6 +18,7 @@ void output_O(_sys_o *info) {
         {COMPLETE, " Osname   ", SEPERATOR, " ",  info -> dist},
         {COMPLETE, " Kernel   ", SEPERATOR, " ",  info -> kernel},
         {COMPLETE, " Desktop  ", SEPERATOR, " ",  info -> desk},
+        {COMPLETE, " Uptime   ", SEPERATOR, " ",  info -> sysup},
         {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> pkgs}, 
     };
     size_t col, row;
@@ -30,7 +31,7 @@ void output_O(_sys_o *info) {
 }
 
 void sys_O(_sys_o *info) {
-    char *terminal, *desktop, *pkgs, *date, *kernel, *addrv4, *dist;
+    char *terminal, *desktop, *pkgs, *date, *kernel, *addrv4, *dist, *sysup;
     
     terminal = term_O();
     desktop  = desk_O();
@@ -39,6 +40,7 @@ void sys_O(_sys_o *info) {
     kernel   = kernel_O();
     addrv4   = dev_addr_v4_O();
     dist     = dist_O();
+    sysup    = sysup_O();
 
     info -> term    = terminal != NULL ? terminal : "n/a";
     info -> desk    = desktop  != NULL ? desktop  : "n/a";
@@ -47,6 +49,7 @@ void sys_O(_sys_o *info) {
     info -> kernel  = kernel;
     info -> addr_v4 = addrv4;
     info -> dist    = dist;
+    info -> sysup   = sysup;
 }
 
 char *env_O(const char *env) {
@@ -157,4 +160,25 @@ char *dist_O(void) {
     }
     pclose(distro_stream);
     return buf;
+}
+
+char *sysup_O(void) {
+    struct timespec tm;
+    clock_gettime(CLOCK_MONOTONIC_RAW, &tm);
+    unsigned long long days, hours, minutes, seconds;
+    char *tmstr = (char*)malloc(sizeof(char) * 0xff);
+
+    seconds = tm . tv_sec;
+    days    = seconds / 86400;
+    hours   = seconds / 3600 - (days * 24);
+    minutes = seconds / 60 - (days * 1440) - (hours * 60);
+    
+    if (days == 0 && hours == 0) {
+        snprintf(tmstr, 0xff, "%lldm", minutes);
+    } else if (days == 0) {
+        snprintf(tmstr, 0xff, "%lldh %lldm", hours, minutes);
+    } else {
+        snprintf(tmstr, 0xff, "%lldd %lldh %lldm", days, hours, minutes);
+    }
+    return tmstr;
 }
