@@ -1,8 +1,6 @@
 #ifndef _ONLOAD_H
 #define _ONLOAD_H
 
-#include "../colourbar/colourbar.h"
-
 #define TIME_FMT       "%a %b %d %I:%M:%S %Y"
 #define MAX_RESULT_COL 20 
 
