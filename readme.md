@@ -4,7 +4,7 @@
 
 <h2 align="left">Requirements</h2>
 
-  * gcc
+  * gcc >= 10.2.1
   * make
 
 <h2 align="left">Installing</h2> 
