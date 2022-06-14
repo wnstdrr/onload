@@ -8,8 +8,9 @@ int main(void) {
     sys_O(sys_o);
 
     signed int bar = cbar(8);
-    if (bar == 1) {
-        fprintf(stdout, "%c", '\n');
+    if (bar < 0) {
+        perror("Bar index out of range: 1..17");
+        exit(1);
     }
     output_O(sys_o);
     free(sys_o);
