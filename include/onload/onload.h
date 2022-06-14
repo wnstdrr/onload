@@ -6,7 +6,7 @@
 #define TIME_FMT       "%a %b %d %I:%M:%S %Y"
 #define MAX_RESULT_COL 20 
 
-#define MAX_COL_LEN 4
+#define MAX_COL_LEN 5
 #define MAX_ROW_LEN 5
 
 typedef struct _sys_o {
@@ -17,6 +17,7 @@ typedef struct _sys_o {
     char *kernel;
     char *addr_v4;
     char *dist;
+    char *sysup;
 } _sys_o;
 
 extern char *out_array[MAX_RESULT_COL][MAX_ROW_LEN];
@@ -31,4 +32,5 @@ extern char *date_O(void);
 extern char *kernel_O(void);
 extern char *dev_addr_v4_O(void);
 extern char *dist_O(void);
+extern char *sysup_O(void);
 #endif /* _ONLOAD_H */
