@@ -1,6 +1,5 @@
 #include "colourbar.h"
 #include <stdio.h>
-#include <stddef.h>
 
 /* Determine how to output the bar array */
 const char *BLOCK_ARRAY[MAX_COLOUR_COL][MAX_COLOUR_SIZE] = {
@@ -23,7 +22,8 @@ const char *BLOCK_ARRAY[MAX_COLOUR_COL][MAX_COLOUR_SIZE] = {
 };
 
 signed int cbar(const int n) { 
-    size_t col, row;
+    register size_t col, row;
+    const char *(*BLK)[MAX_COLOUR_COL][MAX_COLOUR_SIZE] = &BLOCK_ARRAY;
     if (C_BAR_LIMIT(n) == 1) {
         return -1;
     }
@@ -32,7 +32,7 @@ signed int cbar(const int n) {
             fprintf(stdout, "%c", '\n');
         }
         for (row = 0; row < MAX_COLOUR_ROW; row++) { 
-            fprintf(stdout, "%s", *(*(BLOCK_ARRAY + col) + row));
+            fprintf(stdout, "%s", *(*(*BLK + col) + row));
         }
     }
     fprintf(stdout, "%c", '\n');
