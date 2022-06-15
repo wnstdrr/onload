@@ -181,7 +181,7 @@ char *dist_O(void) {
     buf = (char*)malloc(sizeof(char) * size);
 
     FILE *distro_stream;
-    distro_stream = popen("lsb_release -is", "r");
+    distro_stream = popen("lsb_release -is | tr -d '\n'", "r");
     if (fgets(buf, size, distro_stream) == NULL) {
         return '\0';
     }
