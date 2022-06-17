@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-O3 -Werror=format-security -Werror=implicit-function-declaration -Wall -Wextra
 INSTALL_PATH=/usr/bin
 
-clean: $(GENERATED)
+clean:
 	rm -f lib/*.o
 	rmdir lib/
 	rm -f $(INSTALL_PATH)/onload $(INSTALL_PATH)/cbar-opts
