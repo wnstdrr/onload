@@ -21,7 +21,6 @@ extern void output_O(_sys_o *info) {
         {COMPLETE, " Kernel   ", SEPERATOR, " ",  info -> kernel},
         {COMPLETE, " Uptime   ", SEPERATOR, " ",  info -> sysup},
         {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> pkgs},
-        {COMPLETE, " Date     ", SEPERATOR, " ",  info -> date}
     };
     MAX_COL_LEN = sizeof(out_array) / sizeof(*(out_array + 0));
     const char *(*OUT)[][MAX_ROW_LEN] = &out_array;
