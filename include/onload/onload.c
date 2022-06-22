@@ -20,7 +20,8 @@ extern void output_O(_sys_o *info) {
         {COMPLETE, " Osname   ", SEPERATOR, " ",  info -> dist},
         {COMPLETE, " Kernel   ", SEPERATOR, " ",  info -> kernel},
         {COMPLETE, " Uptime   ", SEPERATOR, " ",  info -> sysup},
-        {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> pkgs}
+        {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> pkgs},
+        {COMPLETE, " Date     ", SEPERATOR, " ",  info -> date}
     };
     MAX_COL_LEN = sizeof(out_array) / sizeof(*(out_array + 0));
     const char *(*OUT)[][MAX_ROW_LEN] = &out_array;
@@ -204,11 +205,11 @@ char *sysup_O(void) {
     minutes = seconds / 60 - (days * 1440) - (hours * 60);
     
     if (days == 0 && hours == 0) {
-        snprintf(tmstr, 0xff, "%lldm", minutes);
+        snprintf(tmstr, size, "%lldm", minutes);
     } else if (days == 0) {
-        snprintf(tmstr, 0xff, "%lldh %lldm", hours, minutes);
+        snprintf(tmstr, size, "%lldh %lldm", hours, minutes);
     } else {
-        snprintf(tmstr, 0xff, "%lldd %lldh %lldm", days, hours, minutes);
+        snprintf(tmstr, size, "%lldd %lldh %lldm", days, hours, minutes);
     }
     return tmstr;
 }
