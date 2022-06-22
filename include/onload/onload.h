@@ -1,10 +1,7 @@
 #ifndef _ONLOAD_H
 #define _ONLOAD_H
 
-#define TIME_FMT       "%a %b %d %I:%M:%S %Y"
-#define MAX_RESULT_COL 20 
-
-#define MAX_COL_LEN 5
+#define TIME_FMT    "%a %b %d %I:%M:%S %Y"
 #define MAX_ROW_LEN 5
 
 typedef struct _sys_o {
@@ -18,7 +15,7 @@ typedef struct _sys_o {
     char *sysup;
 } _sys_o;
 
-extern const char *out_array[MAX_RESULT_COL][MAX_ROW_LEN];
+extern const char *out_array[][MAX_ROW_LEN];
 extern void output_O(_sys_o *info);
 extern void sys_O(_sys_o *info);
 

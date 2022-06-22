@@ -15,14 +15,15 @@
 
 extern void output_O(_sys_o *info) {
     register size_t col, row;
-    const char *out_array[MAX_RESULT_COL][MAX_ROW_LEN] = {
+    register long unsigned int MAX_COL_LEN;
+    const char *out_array[][MAX_ROW_LEN] = {
         {COMPLETE, " Osname   ", SEPERATOR, " ",  info -> dist},
         {COMPLETE, " Kernel   ", SEPERATOR, " ",  info -> kernel},
-        {COMPLETE, " Desktop  ", SEPERATOR, " ",  info -> desk},
         {COMPLETE, " Uptime   ", SEPERATOR, " ",  info -> sysup},
         {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> pkgs}
     };
-    const char *(*OUT)[MAX_RESULT_COL][MAX_ROW_LEN] = &out_array;
+    MAX_COL_LEN = sizeof(out_array) / sizeof(*(out_array + 0));
+    const char *(*OUT)[][MAX_ROW_LEN] = &out_array;
     for (col = 0; col < MAX_COL_LEN; col++) {
         for (row = 0; row < MAX_ROW_LEN; row++) {
             fprintf(stdout, "%s", *(*(*OUT + col) + row));
