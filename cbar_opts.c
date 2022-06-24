@@ -5,11 +5,10 @@
 
 int main(void) {
     size_t index;
-    signed int bar;
     for (index = C_BAR_MIN; index < C_BAR_MAX; index++) {
-        fprintf(stdout, "BAR_OPT: %ld", index);
-        bar = cbar(index);
-        if (bar < 0) {
+        fprintf(stdout, "BAR_OPT: %ld\n", index);
+        cbar(index);
+        if (!C_BAR_LIMIT(index)) {
             perror("Bar index out of range");
             exit(1);
         }
