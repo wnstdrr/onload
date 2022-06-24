@@ -3,7 +3,6 @@
 
 #include <stddef.h>
 
-#define MAX_COLOUR_SIZE 48
 #define MAX_COLOUR_COL  16
 #define MAX_COLOUR_ROW  3
 
@@ -47,7 +46,7 @@
 
 typedef unsigned int ui;
 typedef char *c_p;
-typedef const struct blk {size_t index; c_p block[][MAX_COLOUR_SIZE];} blk;
+typedef const struct blk {size_t index; c_p block[][MAX_COLOUR_ROW];} blk;
 
 extern ui cbar(const ui n);
 #endif /* _COLOURBLOCK_H */
