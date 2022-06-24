@@ -5,12 +5,11 @@ int main(void) {
     _sys_o *sys_o = (_sys_o*)sys_dyn_O();
     sys_O(sys_o);
 
-    signed int bar;
-    bar = cbar(8);
-    if (bar < 0) {
+    const ui n = 8;
+    cbar(n);
+    if (!C_BAR_LIMIT(n)) {
         return 1;
     }
-
     output_O(sys_o);
     free_O(sys_o);
     return 0;

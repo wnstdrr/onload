@@ -1,6 +1,8 @@
 #ifndef _COLOURBLOCK_H
 #define _COLOURBLOCK_H
 
+#include <stddef.h>
+
 #define MAX_COLOUR_SIZE 48
 #define MAX_COLOUR_COL  16
 #define MAX_COLOUR_ROW  3
@@ -8,12 +10,12 @@
 #define C_BAR_MIN       1
 #define C_BAR_MAX       17
 
-#define C_BAR_LIMIT(n) (n < C_BAR_MIN || n > C_BAR_MAX)
+#define C_BAR_LIMIT(n) (n < C_BAR_MIN || n > C_BAR_MAX ? 0 : 1)
 
 /* Unicode Characters */
 #define BLOCK           "\u2588\u2588\u2588"
-#define SEPERATOR       "\033[95m\uf178\033[0m"
-#define COMPLETE        "[\033[92m\uf00c\033[0m]"
+#define SEPERATOR       "\033[95m\u279C\033[0m"
+#define COMPLETE        "[\033[92m\u2713\033[0m]"
 
 /* BLOCK Colour definitions */
 #define LGHT_BLOCK        "\033[90;100m"
@@ -43,7 +45,9 @@
 #define BLINK           "\033[5m"
 #define RESET           "\033[0m"
 
-extern const char *BLOCK_ARRAY[MAX_COLOUR_COL][MAX_COLOUR_SIZE];
-extern signed int cbar(const int n);
+typedef unsigned int ui;
+typedef char *c_p;
+typedef const struct blk {size_t index; c_p block[][MAX_COLOUR_SIZE];} blk;
 
+extern ui cbar(const ui n);
 #endif /* _COLOURBLOCK_H */
