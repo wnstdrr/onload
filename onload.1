@@ -2,11 +2,10 @@
 .hy
 .SH NAME
 .PP
-\f[B]onload\f[R] \- command line system information tool
+\f[B]onload\f[R] \- Command-line system information tool written in C.
 .SH DESCRIPTION
 .PP
-Displays basic system information to stdout and configure settings
-through headers.
+This is my take on my own command-line system information tool written in C. I personally felt that a command-line information tool should be written in the language that is closest to the machine i.eC. Since C has many libraries to interface nativly with Linux it can be quite flexiable and fast depending on your system hardware. I went for a simple approach without anything to flashy, a colour bar, and the output. The name onload comes from a habit of typically putting other system info tools into a .bashrc and having the program run on terminal load i.e onload.
 .SH FILES
 .PP
 \f[I]main.c\f[R] provided for convenience
@@ -14,11 +13,11 @@ through headers.
 \f[I]include/onload/onload.h\f[R] configuration for outputing results
 
 \f[I]include/colourbar/colourbar.h\f[R] configuration for customizing
-colourbar
+colourbar display
 
 .SH AUTHOR
 .PP
-Xander Tedder <xandertedder7@gmail.com>
+Written by Xander Tedder <xandertedder7@gmail.com>
 .SH SEE ALSO
 .PP
-\f[B]onload(1)\f[R]
+\f[B]cbar-opts(1)\f[R]
