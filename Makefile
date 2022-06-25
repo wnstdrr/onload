@@ -13,8 +13,6 @@ install:
 	mkdir -p lib/
 	$(CC) -shared -o lib/libonload.so -fPIC include/onload/onload.c $(CFLAGS)
 	$(CC) -shared -o lib/libcolourbar.so -fPIC include/colourbar/colourbar.c $(CFLAGS)
-	#$(CC) -g -fPIC -O -c include/onload/onload.c -o lib/onload.o $(CFLAGS)
-	#$(CC) -g -fPIC -O -c include/colourbar/colourbar.c -o lib/colourbar.o $(CFLAGS)
 
 	$(CC) -o $(INSTALL_PATH)/onload main.c lib/libonload.so lib/libcolourbar.so $(CFLAGS)
 	$(CC) -o $(INSTALL_PATH)/cbar-opts cbar_opts.c lib/libcolourbar.so $(CFLAGS)
