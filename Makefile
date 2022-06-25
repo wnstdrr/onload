@@ -9,13 +9,15 @@ clean:
 	rm -f $(INSTALL_PATH)/onload $(INSTALL_PATH)/cbar-opts
 	rm -f $(MAN_PATH)/onload.1.gz $(MAN_PATH)/onload.1
 
-install:
+libonload.so:
 	mkdir -p lib/
-	$(CC) -shared -o lib/libonload.so -fPIC include/onload/onload.c $(CFLAGS)
-	$(CC) -shared -o lib/libcolourbar.so -fPIC include/colourbar/colourbar.c $(CFLAGS)
+	$(CC) -shared -o lib/libonload.so include/onload/onload.c -fPIC $(CFLAGS)
 
+libcolourbar.so:
+	$(CC) -shared -o lib/libcolourbar.so include/colourbar/colourbar.c -fPIC $(CFLAGS)
+
+install: libonload.so libcolourbar.so
 	$(CC) -o $(INSTALL_PATH)/onload main.c lib/libonload.so lib/libcolourbar.so $(CFLAGS)
 	$(CC) -o $(INSTALL_PATH)/cbar-opts cbar_opts.c lib/libcolourbar.so $(CFLAGS)
 
-	cp onload.1 $(MAN_PATH)
-	gzip $(MAN_PATH)/onload.1
+	cp onload.1 $(MAN_PATH) && gzip $(MAN_PATH)/onload.1
