@@ -17,10 +17,13 @@ extern void output_O(_sys_o *info) {
     register size_t col, row;
     register long unsigned int MAX_COL_LEN;
     const char *out_array[][MAX_ROW_LEN] = {
-        {COMPLETE, " Osname   ", SEPERATOR, " ",  info -> dist},
-        {COMPLETE, " Kernel   ", SEPERATOR, " ",  info -> kernel},
-        {COMPLETE, " Uptime   ", SEPERATOR, " ",  info -> sysup},
-        {COMPLETE, " Pkgs     ", SEPERATOR, " ",  info -> pkgs},
+        {COMPLETE, " ", "OS     ", SEPERATOR, " ",  info -> dist},
+        {COMPLETE, " ", "Kernel ", SEPERATOR, " ",  info -> kernel},
+        {COMPLETE, " ", "Term   ", SEPERATOR, " ",  info -> term},
+        {COMPLETE, " ", "Date   ", SEPERATOR, " ",  info -> date},
+        {COMPLETE, " ", "Uptime ", SEPERATOR, " ",  info -> sysup},
+        {COMPLETE, " ", "Desk   ", SEPERATOR, " ",  info -> desk},
+        {COMPLETE, " ", "Pkgs   ", SEPERATOR, " ",  info -> pkgs},
     };
     MAX_COL_LEN = sizeof(out_array) / sizeof(*(out_array + 0));
     const char *(*OUT)[][MAX_ROW_LEN] = &out_array;
@@ -30,17 +33,17 @@ extern void output_O(_sys_o *info) {
         }
         fprintf(stdout, "%c", '\n');
     }
+    fprintf(stdout, "%c", '\n');
 }
 
 extern void sys_O(_sys_o *info) {
-    char *terminal, *desktop, *pkgs, *date, *kernel, *addrv4, *dist, *sysup;
+    char *terminal, *desktop, *pkgs, *date, *kernel, *dist, *sysup;
     
     terminal = term_O();
     desktop  = desk_O();
     pkgs     = pkgs_O();
     date     = date_O();
     kernel   = kernel_O();
-    addrv4   = dev_addr_v4_O();
     dist     = dist_O();
     sysup    = sysup_O();
 
@@ -49,7 +52,6 @@ extern void sys_O(_sys_o *info) {
     info -> pkgs    = pkgs     != NULL ? pkgs     : "n/a";
     info -> date    = date;
     info -> kernel  = kernel;
-    info -> addr_v4 = addrv4;
     info -> dist    = dist;
     info -> sysup   = sysup;
 }
@@ -157,23 +159,6 @@ char *kernel_O(void) {
     popcorn = (char*)malloc(sizeof(char) * PopcornSize);
     memcpy(popcorn, ReleaseName, PopcornSize);
     return popcorn;
-}
-
-char* dev_addr_v4_O(void) {
-    const int size = 0xa;
-    char *Host, *IP;
-    int Hostname;
-    Host = (char*)malloc(sizeof(char) * size);
-
-    struct hostent *HostInfo;
-    Hostname = gethostname(Host, sizeof(Host)); 
-    if (Hostname <= 0) {
-        return '\0';
-    }
-    strncat(Host, ".local", 0x7);
-    HostInfo = gethostbyname(Host);
-    IP = inet_ntoa(*(struct in_addr*)HostInfo -> h_addr_list[0]);
-    return IP;
 }
 
 char *dist_O(void) {
