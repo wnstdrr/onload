@@ -9,6 +9,7 @@
 Installation of these packages varys depending on which package manager you're using. So, just find which package matches these versions or the latest.
 
   * gcc >= 10.2.1
+  * lsb-release (most systems have this already)
   * make
 
 <h2 align="left">Installation</h2> 
