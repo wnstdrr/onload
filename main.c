@@ -1,16 +1,17 @@
-#include "include/colourbar/colourbar.h"
-#include "include/onload/onload.h"
+#include "colours.h"
+#include "onload.h"
 
-int main(void) {
-    _sys_o *sys_o = (_sys_o*)sys_dyn_O();
-    sys_O(sys_o);
+int 
+main(void) {
+    _sys_o *sys_o = (_sys_o *)onload_struct();
+    system_info(sys_o);
 
-    const ui n = 8;
+    const unsigned int n = 8;
     cbar(n);
-    if (!C_BAR_LIMIT(n)) {
+    if (!CBARLIMIT(n)) {
         return 1;
     }
-    output_O(sys_o);
-    free_O(sys_o);
+    onload_output(sys_o);
+    onload_free(sys_o);
     return 0;
 }

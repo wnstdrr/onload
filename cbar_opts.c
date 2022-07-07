@@ -1,17 +1,18 @@
-#include "include/colourbar/colourbar.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-
-int main(void) {
-    size_t index;
-    for (index = C_BAR_MIN; index < C_BAR_MAX; index++) {
+#include "colours.h"
+enum {barmin = 1, barmax = 17};
+int 
+main(void) {
+    register size_t index;
+    for (index = barmin; index < barmax; index++) {
         fprintf(stdout, "BAR_OPT: %ld\n", index);
         cbar(index);
-        if (!C_BAR_LIMIT(index)) {
+        if (!CBARLIMIT(index)) {
             perror("Bar index out of range");
-            exit(1);
+            exit(EXIT_FAILURE);
         }
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
