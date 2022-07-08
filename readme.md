@@ -56,7 +56,7 @@ Percent formatters used in `time_fmt` are parsed by *strftime* see [Linux manual
 #define time_fmt "%a %b %d %I:%M:%S %Y"
 ```
  
-<h2 align="left">blkstruct as defined in colourbar.h</h2>
+<h2 align="left">blkstruct as defined in config.h</h2>
 <details>
 <summary>blkstruct</summary>
 
