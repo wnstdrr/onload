@@ -30,8 +30,8 @@ Follow these steps to install
 
 <h2 align="left">Configuration</h2>
 
-To configure onload you can modify the sources located in
-`include/colourbar` and `include/onload` then recompile with the provided Makefile and instructions to clean the previous install.
+To configure onload you can modify the definitions located in
+`config.h` and `colours.h` then recompile with the provided Makefile and instructions to clean the previous install.
 
 The shared object libraries are stored in the `/usr/lib/onload` directory and the header files can either be found in `onload/include` or `/usr/include/onload`.
 
@@ -48,56 +48,56 @@ onload
 │       └── onload.h
 ```
 
-Modify the `TIME_FMT` definition in onload.h to change the default time settings.
+Modify the `time_fmt` definition in onload.h to change the default time settings.
  
-Percent formatters used in `TIME_FMT` are parsed by *strftime* see [Linux manual page](https://man7.org/linux/man-pages/man3/strftime.3.html) for help on formatting.
+Percent formatters used in `time_fmt` are parsed by *strftime* see [Linux manual page](https://man7.org/linux/man-pages/man3/strftime.3.html) for help on formatting.
 
 ```c
-#define TIME_FMT "%a %b %d %I:%M:%S %Y"
+#define time_fmt "%a %b %d %I:%M:%S %Y"
 ```
  
-<h2 align="left">block_array as defined in colourbar.h</h2>
+<h2 align="left">blkstruct as defined in colourbar.h</h2>
 <details>
-<summary>block_array</summary>
+<summary>blkstruct</summary>
 
 ```c
-blk block_array = {
-    .block = {
-        {DRK_BLOCK,           BLOCK, RESET},
-        {RED_LGHT_BLOCK,      BLOCK, RESET},
-        {GREEN_DRK_BLOCK,     BLOCK, RESET},
-        {YELLOW_DRK_BLOCK,    BLOCK, RESET},
-        {BLUE_DRK_BLOCK,      BLOCK, RESET},
-        {MAG_DRK_BLOCK,       BLOCK, RESET},
-        {CYAN_DRK_BLOCK,      BLOCK, RESET},
-        {WHITE_LGHT_BLOCK,    BLOCK, RESET},
-        {LGHT_BLOCK,          BLOCK, RESET},
-        {RED_DRK_BLOCK,       BLOCK, RESET},
-        {GREEN_LGHT_BLOCK,    BLOCK, RESET},
-        {YELLOW_LGHT_BLOCK,   BLOCK, RESET},
-        {BLUE_LGHT_BLOCK,     BLOCK, RESET},
-        {MAG_LGHT_BLOCK,      BLOCK, RESET},
-        {CYAN_LGHT_BLOCK,     BLOCK, RESET},
-        {WHITE_DRK_BLOCK,     BLOCK, RESET}
-    }
-};
+                          /* background     style  endline*/
+blk blkstruct = { .blk = { { dark,          block, reset },
+                           { light_red,     block, reset },
+                           { dark_green,    block, reset },
+                           { dark_yellow,   block, reset },
+                           { dark_blue,     block, reset },
+                           { dark_magenta,  block, reset },
+                           { dark_cyan,     block, reset },
+                           { light_white,   block, reset },
+                           { light,         block, reset },
+                           { dark_red,      block, reset },
+                           { light_green,   block, reset },
+                           { light_yellow,  block, reset },
+                           { light_blue,    block, reset },
+                           { light_magenta, block, reset },
+                           { light_cyan,    block, reset },
+                           { dark_white,    block, reset } } };
 ```
 </details>
 
-<h3 align="left">out_array as defined in onload.h</h3>
+<h3 align="left">out_array as defined in onload.c under onload_output()</h3>
 
 Customizing this array allows for you to create your own results look and feel.
-Just make sure you change the `MAX_COL_LEN` to account for the new array size.
+Just make sure you change the `max_row` definition to account for the new array length.
 
 <details>
 <summary>out_array</summary>
 
 ```c
-char *out_array[][MAX_ROW_LEN] = {
-    {CHECK, " Osname   ", ARROW, " ",  info -> Terminal},
-    {CHECK, " Kernel   ", ARROW, " ",  info -> Kernel},
-    {CHECK, " Desktop  ", ARROW, " ",  info -> Desktop},
-    {CHECK, " Pkgs     ", ARROW, " ",  info -> Packages}
+const char *out_array[][max_row] = {
+        {completion, " ", "OS     ", seperator_colour, seperator, reset, " ", info->dist},
+        {completion, " ", "Kernel ", seperator_colour, seperator, reset, " ", info->kernel},
+        {completion, " ", "Term   ", seperator_colour, seperator, reset, " ", info->term},
+        {completion, " ", "Date   ", seperator_colour, seperator, reset, " ", info->date},
+        {completion, " ", "Uptime ", seperator_colour, seperator, reset, " ", info->sysup},
+        {completion, " ", "Desk   ", seperator_colour, seperator, reset, " ", info->desk},
+        {completion, " ", "Pkgs   ", seperator_colour, seperator, reset, " ", info->pkgs},
 };
 ```
 </details>
